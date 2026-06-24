@@ -15,10 +15,7 @@ class Wikipedia:
             response.raise_for_status()
         except Exception:
             raise ConnectionError("Could not search for wikipedia page")
-        data = response.json()
-        pages = data.get("pages")
-
-        return pages
+        return response.json()
 
     def get_page(title: str):
         url = WikipediaEnum.URL_GET_PAGE.value

@@ -13,7 +13,9 @@ def search(
     ] = False,
     page_limit: Annotated[int, typer.Option(help="The number of pages to suggest")] = 3,
 ):
-    pages = Wikipedia.search_page(search_term, page_limit)
+    response = Wikipedia.search_page(search_term, page_limit)
+
+    pages = response.get("pages")
     page_list = []
     number_of_pages = len(pages)
     page_num = 1
@@ -44,11 +46,12 @@ def search(
         return
 
     r = Wikipedia.get_page(page_list[user_input - 1][1])
-    print(r)
     if wikipedia:
         print("Only searching in wikipedia")
     else:
         print("Searching all sources")
+
+    print(r)
 
 
 if __name__ == "__main__":
