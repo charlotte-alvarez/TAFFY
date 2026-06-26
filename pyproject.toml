@@ -1,11 +1,22 @@
 [project]
 name = "taffy"
 version = "0.1.0"
-description = "Add your description here"
+description = "The Answer Finder for You"
 readme = "README.md"
+authors = [
+    { name = "Char Alvarez", email = "email@armandalvarez.com" }
+]
 requires-python = ">=3.14"
 dependencies = [
     "bs4>=0.0.2",
     "requests>=2.34.2",
     "typer>=0.26.7",
 ]
+
+[project.scripts]
+taffy = "taffy.main:app"
+
+
+[build-system]
+requires = ["uv_build>=0.11.24,<0.12"]
+build-backend = "uv_build"
