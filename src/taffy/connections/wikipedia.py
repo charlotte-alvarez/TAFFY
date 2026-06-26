@@ -1,6 +1,6 @@
 import requests
-from utils.enums import WikipediaEnum
-from utils.errors import ConnectionError
+from src.taffy.utils.enums import WikipediaEnum
+from src.taffy.utils.errors import ConnectionError
 from bs4 import BeautifulSoup
 
 

@@ -1,7 +1,7 @@
 import typer
 from typing import Annotated
-from connections.wikipedia import Wikipedia
-from utils.response_parsing import (
+from src.taffy.connections.wikipedia import Wikipedia
+from src.taffy.utils.response_parsing import (
     parse_wiki_pages_for_title_and_description,
     parse_wiki_page_for_content,
     parse_wiki_page_for_references,
