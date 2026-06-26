@@ -54,4 +54,4 @@ class Wikipedia:
             raise ConnectionError("Could not get wikipedia page")
 
         soup = BeautifulSoup(response.text, "html.parser")
-        return soup.prettify()
+        return soup
