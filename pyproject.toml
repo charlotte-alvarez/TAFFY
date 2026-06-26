@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "The Answer Finder for You"
 readme = "README.md"
 authors = [
-    { name = "Char Alvarez", email = "email@armandalvarez.com" }
+    { name = "Char Alvarez" }
 ]
 requires-python = ">=3.14"
 dependencies = [
