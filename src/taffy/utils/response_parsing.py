@@ -42,24 +42,18 @@ def parse_wiki_page_for_content(soup: bs) -> dict:
         section = par.parent
         section_text = section.get_text()
         h2 = section.find("h2")
-        if h2:
+
+        if h2:  # This is for sections not part of the basic description
             h2 = h2.text
-
-        if h2:
-            if h2 in content:  # If part of the same heading2 section
-                existing_text = content[h2]
-                content[h2] = existing_text + section_text
-
-            else:
-                content[h2] = section_text
+            content[h2] = section_text
 
         else:  # This is for the basic description
-            if not content:  # If the start of this section
+            if not content:  # If the start of the basic description
                 content["Description"] = section_text
 
             else:
                 existing_desc = content["Description"]
-                content["Description"] = existing_desc + "\n" + "\t" + section_text
+                content["Description"] = existing_desc + "\n" + section_text
 
     return content
 
