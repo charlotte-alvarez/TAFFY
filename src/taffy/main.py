@@ -58,10 +58,10 @@ def search(
     # Wikipedia
 
     print(content.pop("Description"))
+    print("\n\n")
 
     while True:
         print("\n\n")
-
         if show_references:
             index = 0
             print("References:\n")
@@ -95,6 +95,8 @@ def search(
         else:
             key = list(content.keys())[user_input - 1]
             print(content[key])
+
+        print("\n\n")
 
 
 if __name__ == "__main__":
