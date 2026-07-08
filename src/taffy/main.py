@@ -38,14 +38,7 @@ def search_wikipedia(
             references = WikipediaParsers.parse_wiki_page_for_references(response)
             print(WikipediaTextGeneration.references_list(references))
 
-        output_text = "Additional Sections\n"
-        index = 0
-        for section in content:
-            output_text += f"{index + 1} - {list(content.keys())[index]}\n"
-            index += 1
-        output_text = (
-            f"---\nSee additional section? (1-{len(content)}; 0 quits)\n\n{output_text}"
-        )
+        output_text = WikipediaTextGeneration.additional_sections(content)
 
         user_input = -1
         number_of_extra_sections = len(content)

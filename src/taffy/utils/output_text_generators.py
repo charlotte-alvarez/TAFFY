@@ -46,3 +46,24 @@ class WikipediaTextGeneration:
         for reference in references:
             output_text += f"{index + 1} - {reference}"
             index += 1
+
+        return output_text
+
+    def additional_sections(page_content: dict) -> str:
+        """
+        Output text for additional wikipedia page sections
+
+        Args:
+            sections (list): dict of all sections and their content
+
+        Returns:
+            str: generated text
+        """
+        output_text = "Additional Sections\n"
+        index = 0
+        for section in page_content:
+            output_text += f"{index + 1} - {list(page_content.keys())[index]}\n"
+            index += 1
+        output_text = f"---\nSee additional section? (1-{len(page_content)}; 0 quits)\n\n{output_text}"
+
+        return output_text
