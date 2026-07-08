@@ -44,7 +44,7 @@ class WikipediaTextGeneration:
         output_text = "References:\n"
         index = 0
         for reference in references:
-            output_text += f"{index + 1} - {reference}"
+            output_text += f"{index + 1} - {reference}\n"
             index += 1
 
         return output_text
