@@ -20,8 +20,7 @@ def search(
     response = Wikipedia.search_page(search_term, page_limit)
 
     pages = response.get("pages")
-    page_list = parse_wiki_pages_for_title_and_description(pages)
-    number_of_pages = len(page_list)
+    page_list = WikipediaParsers.parse_wiki_pages_for_title_and_description(pages)
 
     output_text = wikipedia_page_suggestions(page_list)
 
@@ -34,16 +33,9 @@ def search(
         return
 
     response = Wikipedia.get_page(page_list[user_input - 1][1])
-    content = parse_wiki_page_for_content(response)
-
-    if wikipedia:
-        print("Only searching in wikipedia")
-    else:
-        print("Searching all sources")
+    content = WikipediaParsers.parse_wiki_page_for_content(response)
 
     print("\n\n---------------\n\n")
-
-    # Wikipedia
 
     print(content.pop("Description"))
     print("\n\n")
@@ -53,7 +45,7 @@ def search(
         if show_references:
             index = 0
             print("References:\n")
-            for reference in parse_wiki_page_for_references(response):
+            for reference in WikipediaParsers.parse_wiki_page_for_references(response):
                 print(f"{index + 1} - {reference}")
                 index += 1
 

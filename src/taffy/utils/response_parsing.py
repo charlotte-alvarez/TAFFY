@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup as bs
 
 
+class WikipediaParsers:
 def parse_wiki_pages_for_title_and_description(pages: list) -> list[tuple]:
     """
     Get the title and descriptions from a list of pages, pack it together with the page number.
@@ -23,7 +24,6 @@ def parse_wiki_pages_for_title_and_description(pages: list) -> list[tuple]:
         page_num += 1
 
     return page_list
-
 
 def parse_wiki_page_for_content(soup: bs) -> dict:
     """
@@ -56,7 +56,6 @@ def parse_wiki_page_for_content(soup: bs) -> dict:
                 content["Description"] = existing_desc + "\n" + section_text
 
     return content
-
 
 def parse_wiki_page_for_references(soup: bs) -> list:
     """
