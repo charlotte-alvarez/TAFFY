@@ -2,7 +2,7 @@ import typer
 from typing import Annotated
 from taffy.connections.wikipedia import Wikipedia
 from taffy.utils.response_parsing import WikipediaParsers
-from taffy.utils.output_text_generators import wikipedia_page_suggestions
+from taffy.utils.output_text_generators import WikipediaTextGeneration
 from taffy.utils.helpers import handle_input
 
 app = typer.Typer(help="TAFFY: The Answer Finder for You!")
@@ -19,7 +19,7 @@ def search_wikipedia(
     pages = response.get("pages")
     page_list = WikipediaParsers.parse_wiki_pages_for_title_and_description(pages)
 
-    output_text = wikipedia_page_suggestions(page_list)
+    output_text = WikipediaTextGeneration.wikipedia_page_suggestions(page_list)
 
     user_input = handle_input(output_text, len(page_list))
 
@@ -30,10 +30,7 @@ def search_wikipedia(
     response = Wikipedia.get_page(page_list[user_input - 1][1])
     content = WikipediaParsers.parse_wiki_page_for_content(response)
 
-    print("\n\n---------------\n\n")
-
-    print(content.pop("Description"))
-    print("\n\n")
+    print(WikipediaTextGeneration.description_of_page(content))
 
     while True:
         print("\n\n")
