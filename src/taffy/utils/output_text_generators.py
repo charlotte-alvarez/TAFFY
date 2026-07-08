@@ -25,8 +25,7 @@ class WikipediaTextGeneration:
             str: The output text
         """
 
-        output_text = ""
-        output_text += "\n\n---------------\n\n"
+        output_text = "\n\n---------------\n\n"
         output_text += page_content.pop("Description")
         output_text += "\n\n"
 
