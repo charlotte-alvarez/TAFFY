@@ -11,9 +11,6 @@ app = typer.Typer(help="TAFFY: The Answer Finder for You!")
 @app.command()
 def search(
     search_term: str,
-    wikipedia: Annotated[
-        bool, typer.Option(help="Search only wikipedia for page")
-    ] = False,
     page_limit: Annotated[int, typer.Option(help="The number of pages to suggest")] = 3,
     show_references: Annotated[bool, typer.Option(help="Show references")] = False,
 ):
