@@ -9,7 +9,7 @@ app = typer.Typer(help="TAFFY: The Answer Finder for You!")
 
 
 @app.command()
-def search(
+def search_wikipedia(
     search_term: str,
     page_limit: Annotated[int, typer.Option(help="The number of pages to suggest")] = 3,
     show_references: Annotated[bool, typer.Option(help="Show references")] = False,
@@ -20,8 +20,6 @@ def search(
     page_list = WikipediaParsers.parse_wiki_pages_for_title_and_description(pages)
 
     output_text = wikipedia_page_suggestions(page_list)
-
-    user_input = -1
 
     user_input = handle_input(output_text, len(page_list))
 
