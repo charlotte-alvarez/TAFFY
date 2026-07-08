@@ -25,10 +25,7 @@ def search(
     page_list = parse_wiki_pages_for_title_and_description(pages)
     number_of_pages = len(page_list)
 
-    output_text = ""
-    for page in page_list:
-        output_text += f"{page[0]} {page[1]}  ---  {page[2]}\n"
-    output_text = f"Search for what? (1-{number_of_pages}; 0 quits)\n\n{output_text}"
+    output_text = wikipedia_page_suggestions(page_list)
 
     user_input = -1
 
