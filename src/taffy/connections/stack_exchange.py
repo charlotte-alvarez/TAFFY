@@ -2,7 +2,6 @@ import requests
 from requests.exceptions import HTTPError
 from taffy.utils.enums import StackExchangeEnum
 from taffy.utils.errors import ConnectionError
-from bs4 import BeautifulSoup
 
 
 class StackExchange:
@@ -48,10 +47,3 @@ class StackExchange:
             raise ConnectionError("Could not search for query")
 
         return response.json().get("items")
-
-
-if __name__ == "__main__":
-    l = StackExchange.advanced_search("test")
-    for x in l:
-        print(x)
-        print("\n\n----\n\n")
