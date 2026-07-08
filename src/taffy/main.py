@@ -1,11 +1,9 @@
 import typer
 from typing import Annotated
 from taffy.connections.wikipedia import Wikipedia
-from taffy.utils.response_parsing import (
-    parse_wiki_pages_for_title_and_description,
-    parse_wiki_page_for_content,
-    parse_wiki_page_for_references,
-)
+from taffy.utils.response_parsing import WikipediaParsers
+from taffy.utils.output_text_generators import wikipedia_page_suggestions
+from taffy.utils.helpers import handle_input
 
 app = typer.Typer(help="TAFFY: The Answer Finder for You!")
 
@@ -29,14 +27,7 @@ def search(
 
     user_input = -1
 
-    while True:
-        user_input = input(output_text)
-        try:
-            user_input = int(user_input)
-            if 0 <= user_input < number_of_pages + 1:
-                break
-        except TypeError, ValueError:
-            pass
+    user_input = handle_input(output_text, len(page_list))
 
     if user_input == 0:
         print("Quitting")
