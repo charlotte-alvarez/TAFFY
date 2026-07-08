@@ -73,3 +73,22 @@ class WikipediaParsers:
             text_refs.append(r.text)
 
         return text_refs
+
+
+class StackExchangeParsers:
+    def parse_site_dict_for_api_site_param(sites_response: dict) -> list:
+        """
+        Get a list of API site parameters from a dictionary of site objects
+
+        Args:
+            sites_response(dict): A dictionary of site objects
+
+        Returns:
+            list: List of api site parameters of each site
+        """
+
+        sites_list = []
+        for site_object in sites_response:
+            sites_list.append(site_object.get("api_site_parameter"))
+
+        return sites_list
