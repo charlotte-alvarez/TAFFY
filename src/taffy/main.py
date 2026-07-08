@@ -40,16 +40,7 @@ def search_wikipedia(
 
         output_text = WikipediaTextGeneration.additional_sections(content)
 
-        user_input = -1
-        number_of_extra_sections = len(content)
-        while True:
-            user_input = input(output_text)
-            try:
-                user_input = int(user_input)
-                if 0 <= user_input < number_of_extra_sections + 1:
-                    break
-            except TypeError, ValueError:
-                pass
+        user_input = handle_input(output_text, len(content))
 
         if user_input == 0:
             print("Quitting")
