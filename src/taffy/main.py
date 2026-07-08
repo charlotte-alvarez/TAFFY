@@ -35,11 +35,8 @@ def search_wikipedia(
     while True:
         print("\n\n")
         if show_references:
-            index = 0
-            print("References:\n")
-            for reference in WikipediaParsers.parse_wiki_page_for_references(response):
-                print(f"{index + 1} - {reference}")
-                index += 1
+            references = WikipediaParsers.parse_wiki_page_for_references(response)
+            print(WikipediaTextGeneration.references_list(references))
 
         output_text = "Additional Sections\n"
         index = 0

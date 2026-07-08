@@ -30,3 +30,19 @@ class WikipediaTextGeneration:
         output_text += "\n\n"
 
         return output_text
+
+    def references_list(references: list) -> str:
+        """
+        Output text for the reference list
+
+        Args:
+            refrences (list): List of references
+
+        Returns:
+            str: generated text
+        """
+        output_text = "References:\n"
+        index = 0
+        for reference in references:
+            output_text += f"{index + 1} - {reference}"
+            index += 1
