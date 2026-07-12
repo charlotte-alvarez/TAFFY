@@ -1,8 +1,13 @@
 import typer
 from typing import Annotated
 from taffy.connections.wikipedia import Wikipedia
-from taffy.utils.response_parsing import WikipediaParsers
-from taffy.utils.output_text_generators import WikipediaTextGeneration
+from taffy.connections.stack_exchange import StackExchange
+from taffy.utils.response_parsing import WikipediaParsers, StackExchangeParsers
+from taffy.utils.output_text_generators import (
+    WikipediaTextGeneration,
+    StackExchangeTextGeneration,
+)
+from taffy.utils.enums import StackExchangeEnum
 from taffy.utils.helpers import handle_input
 
 app = typer.Typer(help="TAFFY: The Answer Finder for You!")
@@ -50,6 +55,35 @@ def search_wikipedia(
             print(content[key])
 
         print("\n\n")
+
+
+@app.command()
+def search_stack_exchange(
+    search_term: str,
+    sort_by_activity: Annotated[
+        bool, typer.Option(help="Sort by activity instead of relevance")
+    ] = False,
+    site: Annotated[
+        bool, typer.Option(help="Choose SE site to search on instead of stackoverflow")
+    ] = False,
+):
+    if site:
+        response = StackExchange.sites_list()
+        sites = StackExchangeParsers.parse_site_dict_for_api_site_param(response)
+        output_text = StackExchangeTextGeneration.site_choice(sites)
+        user_input = handle_input(output_text, len(sites))
+        site_choice = sites[user_input - 1]
+    else:
+        site_choice = StackExchangeEnum.STACKOVERFLOW_SITE.value
+
+    sort = (
+        StackExchangeEnum.ACTIVITY_SORT.value
+        if sort_by_activity
+        else StackExchangeEnum.RELEVANCE_SORT.value
+    )
+
+    response = StackExchange.advanced_search(search_term, sort, site_choice)
+    print(response)
 
 
 if __name__ == "__main__":

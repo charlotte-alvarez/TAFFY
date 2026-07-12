@@ -67,3 +67,22 @@ class WikipediaTextGeneration:
         output_text = f"---\nSee additional section? (1-{len(page_content)}; 0 quits)\n\n{output_text}"
 
         return output_text
+
+class StackExchangeTextGeneration:
+    def site_choice(sites: list):
+        """
+        Output text for the SE site choice
+
+        Args:
+            sites (list): List of sites
+
+        Returns:
+            str: generated text
+        """
+        output_text = "Choose site:\n"
+        index = 0
+        for site in sites:
+            output_text += f"{index + 1} - {site}\n"
+            index += 1
+
+        return output_text

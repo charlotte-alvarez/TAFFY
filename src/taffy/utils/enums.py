@@ -12,4 +12,7 @@ class WikipediaEnum(Enum):
 class StackExchangeEnum(Enum):
     VERSION = "2.3"
     URL_SITES = f"https://api.stackexchange.com/{VERSION}/sites"
-    URL_ADVANCED_SEARCH = "https://api.stackexchange.com/{VERSION}/search/advanced?order=desc&sort=relevance&q={QUERY}&site=stackoverflow"
+    URL_ADVANCED_SEARCH = "https://api.stackexchange.com/{VERSION}/search/advanced?order=desc&sort={SORT}&q={QUERY}&site={SITE}"
+    STACKOVERFLOW_SITE = "stackoverflow"
+    ACTIVITY_SORT = "activity"
+    RELEVANCE_SORT = "relevance"

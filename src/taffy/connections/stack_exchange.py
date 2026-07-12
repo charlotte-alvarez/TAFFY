@@ -2,6 +2,7 @@ import requests
 from requests.exceptions import HTTPError
 from taffy.utils.enums import StackExchangeEnum
 from taffy.utils.errors import ConnectionError
+from taffy.utils.response_parsing import StackExchangeParsers
 
 
 class StackExchange:
@@ -25,7 +26,11 @@ class StackExchange:
             raise ConnectionError("Could not search for stack exchange sites")
         return response.json().get("items")
 
-    def advanced_search(query: str) -> dict:
+    def advanced_search(
+        query: str,
+        sort: str = StackExchangeEnum.RELEVANCE_SORT.value,
+        site: str = StackExchangeEnum.STACKOVERFLOW_SITE.value,
+    ) -> dict:
         """
         Hit the advanced search endpoint of the wikipedia api
 
@@ -37,7 +42,7 @@ class StackExchange:
         """
 
         url = StackExchangeEnum.URL_ADVANCED_SEARCH.value.format(
-            VERSION=StackExchangeEnum.VERSION.value, QUERY=query
+            VERSION=StackExchangeEnum.VERSION.value, SORT=sort, QUERY=query, SITE=site
         )
 
         try:
@@ -47,3 +52,7 @@ class StackExchange:
             raise ConnectionError("Could not search for query")
 
         return response.json().get("items")
+
+
+if __name__ == "__main__":
+    print(StackExchange.advanced_search("hello world"))
