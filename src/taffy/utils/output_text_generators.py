@@ -68,6 +68,7 @@ class WikipediaTextGeneration:
 
         return output_text
 
+
 class StackExchangeTextGeneration:
     def site_choice(sites: list):
         """

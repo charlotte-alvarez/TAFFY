@@ -16,13 +16,17 @@ app = typer.Typer(help="TAFFY: The Answer Finder for You!")
 @app.command()
 def search_wikipedia(
     search_term: str,
-    page_limit: Annotated[int, typer.Option(help="The number of pages to suggest")] = 3,
-    show_references: Annotated[bool, typer.Option(help="Show references")] = False,
+    page_limit: Annotated[int,
+                          typer.Option(
+                              help="The number of pages to suggest")] = 3,
+    show_references: Annotated[bool,
+                               typer.Option(help="Show references")] = False,
 ):
     response = Wikipedia.search_page(search_term, page_limit)
 
     pages = response.get("pages")
-    page_list = WikipediaParsers.parse_wiki_pages_for_title_and_description(pages)
+    page_list = WikipediaParsers.parse_wiki_pages_for_title_and_description(
+        pages)
 
     output_text = WikipediaTextGeneration.wikipedia_page_suggestions(page_list)
 
@@ -40,7 +44,8 @@ def search_wikipedia(
     while True:
         print("\n\n")
         if show_references:
-            references = WikipediaParsers.parse_wiki_page_for_references(response)
+            references = WikipediaParsers.parse_wiki_page_for_references(
+                response)
             print(WikipediaTextGeneration.references_list(references))
 
         output_text = WikipediaTextGeneration.additional_sections(content)
@@ -61,26 +66,26 @@ def search_wikipedia(
 def search_stack_exchange(
     search_term: str,
     sort_by_activity: Annotated[
-        bool, typer.Option(help="Sort by activity instead of relevance")
-    ] = False,
+        bool,
+        typer.Option(help="Sort by activity instead of relevance")] = False,
     site: Annotated[
-        bool, typer.Option(help="Choose SE site to search on instead of stackoverflow")
-    ] = False,
+        bool,
+        typer.Option(
+            help="Choose SE site to search on instead of stackoverflow"
+        )] = False,
 ):
     if site:
         response = StackExchange.sites_list()
-        sites = StackExchangeParsers.parse_site_dict_for_api_site_param(response)
+        sites = StackExchangeParsers.parse_site_dict_for_api_site_param(
+            response)
         output_text = StackExchangeTextGeneration.site_choice(sites)
         user_input = handle_input(output_text, len(sites))
         site_choice = sites[user_input - 1]
     else:
         site_choice = StackExchangeEnum.STACKOVERFLOW_SITE.value
 
-    sort = (
-        StackExchangeEnum.ACTIVITY_SORT.value
-        if sort_by_activity
-        else StackExchangeEnum.RELEVANCE_SORT.value
-    )
+    sort = (StackExchangeEnum.ACTIVITY_SORT.value
+            if sort_by_activity else StackExchangeEnum.RELEVANCE_SORT.value)
 
     response = StackExchange.advanced_search(search_term, sort, site_choice)
     print(response)

@@ -2,7 +2,6 @@ import requests
 from requests.exceptions import HTTPError
 from taffy.utils.enums import StackExchangeEnum
 from taffy.utils.errors import ConnectionError
-from taffy.utils.response_parsing import StackExchangeParsers
 
 
 class StackExchange:
