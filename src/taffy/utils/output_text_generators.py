@@ -125,6 +125,6 @@ class StackExchangeTextGeneration:
             output_text += "\n"
             index += 1
 
-        output_text = f"{output_text}\n\nOpen link?"
+        output_text = f"{output_text}\n\nOpen link? (1 - {index}... 0 exits)  "
 
         return output_text
