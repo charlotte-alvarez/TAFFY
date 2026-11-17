@@ -73,6 +73,13 @@ def search_stack_exchange(
         typer.Option(
             help="Choose SE site to search on instead of stackoverflow"
         )] = False,
+    details: Annotated[
+        bool,
+        typer.Option(
+            help="Whether to show extra details in results like score and owner"
+        )] = False,
+    num_results: Annotated[int,
+                           typer.Option(help="Number of results (1-30)")] = 6,
 ):
     if site:
         response = StackExchange.sites_list()
@@ -88,9 +95,38 @@ def search_stack_exchange(
             if sort_by_activity else StackExchangeEnum.RELEVANCE_SORT.value)
 
     response = StackExchange.advanced_search(search_term, sort, site_choice)
+    response = response[:num_results + 1]
 
-    for x in response[0]:
-        print(x)
+    relevant_field_list = StackExchangeParsers.parse_search_response_for_relevant_fields(
+        response)
+
+    output_text = StackExchangeTextGeneration.response(relevant_field_list,
+                                                       details)
+    while True:
+        user_input = handle_input(output_text, len(relevant_field_list))
+
+        try:
+            user_input = int(user_input)
+        except Exception:
+            continue
+
+        if user_input > num_results + 1 or user_input < 0:
+            continue
+
+        if user_input == 0:
+            print("Quitting")
+            return
+
+        else:
+            import webbrowser
+            link = relevant_field_list[user_input - 1].get(
+                StackExchangeEnum.SEARCH_RESULT_FIELD_LINK.value)
+            opened = webbrowser.open(link)
+
+            if not opened:
+                print(
+                    "\nCould not open browser, try copy/pasting link instead!\n\n"
+                )
 
 
 if __name__ == "__main__":

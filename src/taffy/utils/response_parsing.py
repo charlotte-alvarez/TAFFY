@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup as bs
-from src.taffy.utils.enums import StackExchangeEnum as see
+from taffy.utils.enums import StackExchangeEnum as see
 
 
 class WikipediaParsers:
@@ -103,26 +103,29 @@ class StackExchangeParsers:
         Get a list of dictionaries with only the relevant information in them
 
         Args:
-            search_response (list): List of dictionaries with all information returned from SE
+            search_response (list): List of dictionaries with all
+        information returned from SE
 
         Returns:
             list: List of dictionaries with only relevant information
         """
-        see.SEARCH_RESULT_FIELD_TITLE.value,
-        see.SEARCH_RESULT_FIELD_OWNER.value,
-        see.SEARCH_RESULT_FIELD_CREATION_DATE.value,
-        see.SEARCH_RESULT_FIELD_IS_ANSWERED.value,
-        see.SEARCH_RESULT_FIELD_SCORE.value,
-        see.SEARCH_RESULT_FIELD_LINK.value,
+        title = see.SEARCH_RESULT_FIELD_TITLE.value
+        owner = see.SEARCH_RESULT_FIELD_OWNER.value
+        creation_date = see.SEARCH_RESULT_FIELD_CREATION_DATE.value
+        is_answered = see.SEARCH_RESULT_FIELD_IS_ANSWERED.value
+        score = see.SEARCH_RESULT_FIELD_SCORE.value
+        link = see.SEARCH_RESULT_FIELD_LINK.value
 
         parsed_list = []
         for result in search_response:
-            title = result.get(see.SEARCH_RESULT_FIELD_TITLE.value)
-            owner = result.get(see.SEARCH_RESULT_FIELD_OWNER.value)
-            creation_date = result.get(
-                see.SEARCH_RESULT_FIELD_CREATION_DATE.value)
-            is_answered = result.get(see.SEARCH_RESULT_FIELD_IS_ANSWERED.value)
-            score = result.get(see.SEARCH_RESULT_FIELD_SCORE.value)
-            link = result.get(see.SEARCH_RESULT_FIELD_LINK.value)
+            d = {
+                title: result.get(title),
+                owner: result.get(owner),
+                creation_date: result.get(creation_date),
+                is_answered: result.get(is_answered),
+                score: result.get(score),
+                link: result.get(link),
+            }
+            parsed_list.append(d)
 
-            parsed_list.append()
+        return parsed_list

@@ -1,4 +1,8 @@
+from taffy.utils.enums import StackExchangeEnum
+
+
 class WikipediaTextGeneration:
+
     def wikipedia_page_suggestions(page_list: list[tuple]):
         """
         Generate output text for wikipedia page suggestions
@@ -70,6 +74,7 @@ class WikipediaTextGeneration:
 
 
 class StackExchangeTextGeneration:
+
     def site_choice(sites: list):
         """
         Output text for the SE site choice
@@ -85,5 +90,41 @@ class StackExchangeTextGeneration:
         for site in sites:
             output_text += f"{index + 1} - {site}\n"
             index += 1
+
+        return output_text
+
+    def response(relevant_field_list: list, details: bool):
+        """
+        Output text for the field list
+
+        Args:
+            relevant_field_list (list): List of relevant fields from SE output
+            details (bool): Whether to show extra details
+
+        Returns:
+            str: generated text
+        """
+        output_text = "Results:\n"
+        index = 0
+        for result in relevant_field_list:
+            title = result.get(
+                StackExchangeEnum.SEARCH_RESULT_FIELD_TITLE.value)
+            creation_date = result.get(
+                StackExchangeEnum.SEARCH_RESULT_FIELD_CREATION_DATE.value)
+            url = result.get(StackExchangeEnum.SEARCH_RESULT_FIELD_LINK.value)
+            output_text += f"{index + 1} - {title}\n\tcreated: {creation_date}\n\tlink: {url}"
+            if details:
+                answered = result.get(
+                    StackExchangeEnum.SEARCH_RESULT_FIELD_IS_ANSWERED.value)
+                owner = result.get(
+                    StackExchangeEnum.SEARCH_RESULT_FIELD_OWNER.value)
+                score = result.get(
+                    StackExchangeEnum.SEARCH_RESULT_FIELD_SCORE.value)
+                output_text += f"\n\t\tanswered: {answered}\n\t\towner: {owner}\n\t\tscore: {score}"
+
+            output_text += "\n"
+            index += 1
+
+        output_text = f"{output_text}\n\nOpen link?"
 
         return output_text
