@@ -3,6 +3,7 @@ from src.taffy.utils.enums import StackExchangeEnum as see
 
 
 class WikipediaParsers:
+
     def parse_wiki_pages_for_title_and_description(pages: list) -> list[tuple]:
         """
         Get the title and descriptions from a list of pages, pack it together with the page number.
@@ -54,7 +55,8 @@ class WikipediaParsers:
 
                 else:
                     existing_desc = content["Description"]
-                    content["Description"] = existing_desc + "\n" + section_text
+                    content[
+                        "Description"] = existing_desc + "\n" + section_text
 
         return content
 
@@ -77,6 +79,7 @@ class WikipediaParsers:
 
 
 class StackExchangeParsers:
+
     def parse_site_dict_for_api_site_param(sites_response: dict) -> list:
         """
         Get a list of API site parameters from a dictionary of site objects
@@ -94,7 +97,8 @@ class StackExchangeParsers:
 
         return sites_list
 
-    def parse_search_response_for_relevant_fields(search_response: list) -> list:
+    def parse_search_response_for_relevant_fields(
+            search_response: list) -> list:
         """
         Get a list of dictionaries with only the relevant information in them
 
@@ -104,22 +108,21 @@ class StackExchangeParsers:
         Returns:
             list: List of dictionaries with only relevant information
         """
-
-            see.SEARCH_RESULT_FIELD_TITLE.value,
-            see.SEARCH_RESULT_FIELD_OWNER.value,
-            see.SEARCH_RESULT_FIELD_CREATION_DATE.value,
-            see.SEARCH_RESULT_FIELD_IS_ANSWERED.value,
-            see.SEARCH_RESULT_FIELD_SCORE.value,
-            see.SEARCH_RESULT_FIELD_LINK.value,
+        see.SEARCH_RESULT_FIELD_TITLE.value,
+        see.SEARCH_RESULT_FIELD_OWNER.value,
+        see.SEARCH_RESULT_FIELD_CREATION_DATE.value,
+        see.SEARCH_RESULT_FIELD_IS_ANSWERED.value,
+        see.SEARCH_RESULT_FIELD_SCORE.value,
+        see.SEARCH_RESULT_FIELD_LINK.value,
 
         parsed_list = []
         for result in search_response:
             title = result.get(see.SEARCH_RESULT_FIELD_TITLE.value)
             owner = result.get(see.SEARCH_RESULT_FIELD_OWNER.value)
-            creation_date = result.get(see.SEARCH_RESULT_FIELD_CREATION_DATE.value)
+            creation_date = result.get(
+                see.SEARCH_RESULT_FIELD_CREATION_DATE.value)
             is_answered = result.get(see.SEARCH_RESULT_FIELD_IS_ANSWERED.value)
             score = result.get(see.SEARCH_RESULT_FIELD_SCORE.value)
             link = result.get(see.SEARCH_RESULT_FIELD_LINK.value)
 
             parsed_list.append()
-
