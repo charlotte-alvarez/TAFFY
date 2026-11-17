@@ -88,7 +88,9 @@ def search_stack_exchange(
             if sort_by_activity else StackExchangeEnum.RELEVANCE_SORT.value)
 
     response = StackExchange.advanced_search(search_term, sort, site_choice)
-    print(response)
+
+    for x in response[0]:
+        print(x)
 
 
 if __name__ == "__main__":
