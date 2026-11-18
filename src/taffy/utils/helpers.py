@@ -1,4 +1,4 @@
-def handle_input(output_text: str, number_of_options: int) -> int:
+def handle_input(output_text: str, number_of_options: int = 0) -> int:
     """
     Handles input from the user for selecting options
 
@@ -12,6 +12,8 @@ def handle_input(output_text: str, number_of_options: int) -> int:
 
     while True:
         user_input = input(output_text)
+        if number_of_options == 0:
+            return user_input
         try:
             user_input = int(user_input)
             if 0 <= user_input < number_of_options + 1:

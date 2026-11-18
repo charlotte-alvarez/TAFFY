@@ -2,8 +2,27 @@ from bs4 import BeautifulSoup as bs
 from taffy.utils.enums import StackExchangeEnum as see
 
 
-class WikipediaParsers:
+class WikipediaSection:
+    def __init__(
+        self,
+        name: str,
+        text: str,
+        parent: WikipediaSection = None,
+        children: list | None = None,
+    ):
+        self.name = name
+        self.text = text
+        self.parent = parent
+        self.children = [] if children is None else children
 
+    def add_child(self, section: WikipediaSection):
+        self.children.append(section)
+
+    def has_parent(self):
+        return self.parent != None
+
+
+class WikipediaParsers:
     def parse_wiki_pages_for_title_and_description(pages: list) -> list[tuple]:
         """
         Get the title and descriptions from a list of pages, pack it together with the page number.
@@ -27,7 +46,7 @@ class WikipediaParsers:
 
         return page_list
 
-    def parse_wiki_page_for_content(soup: bs) -> dict:
+    def parse_wiki_page_for_content(soup: bs) -> WikipediaSection:
         """
         Parse a wikipedia page for its relevant content.
 
@@ -35,30 +54,40 @@ class WikipediaParsers:
             soup (bs): The soupy object (html parser BeautifulSoup object)
 
         Returns:
-            dict: Dictionary containing all sections and their content
+            WikipediaSection: The root section, usually the description
         """
-        pars = soup.find_all("p")
-        content = {}
+        sections = soup.find_all("section")
+        desc = sections.pop(0)
+        desc_text = desc.get_text()
 
-        for par in pars:
-            section = par.parent
-            section_text = section.get_text()
+        root = WikipediaSection("Description", desc_text)
+
+        for section in sections:
             h2 = section.find("h2")
 
-            if h2:  # This is for sections not part of the basic description
-                h2 = h2.text
-                content[h2] = section_text
+            if h2:
+                text = []
 
-            else:  # This is for the basic description
-                if not content:  # If the start of the basic description
-                    content["Description"] = section_text
+                for element in h2.find_all_next():
+                    if element.name == "h3":
+                        break
 
-                else:
-                    existing_desc = content["Description"]
-                    content[
-                        "Description"] = existing_desc + "\n" + section_text
+                    if element.name == "p":
+                        text.append(f"{element.get_text()}\n\n")
 
-        return content
+                text = " ".join(text)
+
+                s = WikipediaSection(h2.get_text(), text, root)
+                last_parent = s
+                root.add_child(s)
+
+            else:
+                h3 = section.find("h3")
+                if h3:
+                    s = WikipediaSection(h3.get_text(), section.get_text(), last_parent)
+                    last_parent.add_child(s)
+
+        return root
 
     def parse_wiki_page_for_references(soup: bs) -> list:
         """
@@ -79,7 +108,6 @@ class WikipediaParsers:
 
 
 class StackExchangeParsers:
-
     def parse_site_dict_for_api_site_param(sites_response: dict) -> list:
         """
         Get a list of API site parameters from a dictionary of site objects
@@ -97,8 +125,7 @@ class StackExchangeParsers:
 
         return sites_list
 
-    def parse_search_response_for_relevant_fields(
-            search_response: list) -> list:
+    def parse_search_response_for_relevant_fields(search_response: list) -> list:
         """
         Get a list of dictionaries with only the relevant information in them
 

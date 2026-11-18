@@ -187,6 +187,7 @@ source = { editable = "." }
 dependencies = [
     { name = "bs4" },
     { name = "requests" },
+    { name = "rich" },
     { name = "typer" },
 ]
 
@@ -194,6 +195,7 @@ dependencies = [
 requires-dist = [
     { name = "bs4", specifier = ">=0.0.2" },
     { name = "requests", specifier = ">=2.34.2" },
+    { name = "rich", specifier = ">=15.0.0" },
     { name = "typer", specifier = ">=0.26.7" },
 ]
 

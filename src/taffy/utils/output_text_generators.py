@@ -1,8 +1,8 @@
 from taffy.utils.enums import StackExchangeEnum
+from taffy.utils.response_parsing import WikipediaSection
 
 
 class WikipediaTextGeneration:
-
     def wikipedia_page_suggestions(page_list: list[tuple]):
         """
         Generate output text for wikipedia page suggestions
@@ -18,22 +18,6 @@ class WikipediaTextGeneration:
 
         return output_text
 
-    def description_of_page(page_content: dict) -> str:
-        """
-        Output text for the basic description from a wikipedia page
-
-        Args:
-            page_content (dict): The dictionary of page content and sections
-
-        Returns:
-            str: The output text
-        """
-
-        output_text = "\n\n---------------\n\n"
-        output_text += page_content.pop("Description")
-        output_text += "\n\n"
-
-        return output_text
 
     def references_list(references: list) -> str:
         """
@@ -53,28 +37,31 @@ class WikipediaTextGeneration:
 
         return output_text
 
-    def additional_sections(page_content: dict) -> str:
+    def additional_sections(section: WikipediaSection) -> str:
         """
         Output text for additional wikipedia page sections
 
         Args:
-            sections (list): dict of all sections and their content
+            section (WikipediaSection): The current section to parse
 
         Returns:
             str: generated text
         """
         output_text = "Additional Sections\n"
         index = 0
-        for section in page_content:
-            output_text += f"{index + 1} - {list(page_content.keys())[index]}\n"
+        for child in section.children:
+            output_text += f"{index + 1} - {child.name}\n"
             index += 1
-        output_text = f"---\nSee additional section? (1-{len(page_content)}; 0 quits)\n\n{output_text}"
+        parent = section.parent.name if section.parent else "Description"
+        num_children = len(section.children)
+        children = f"See additional section? (1-{num_children});" if num_children > 0 else ""
+        output_text = f"-----------\n{children} [Enter] goes up ({parent}); 0 quits)\n\n{output_text}"
+        output_text += "\n"
 
         return output_text
 
 
 class StackExchangeTextGeneration:
-
     def site_choice(sites: list):
         """
         Output text for the SE site choice
@@ -107,19 +94,20 @@ class StackExchangeTextGeneration:
         output_text = "Results:\n"
         index = 0
         for result in relevant_field_list:
-            title = result.get(
-                StackExchangeEnum.SEARCH_RESULT_FIELD_TITLE.value)
+            title = result.get(StackExchangeEnum.SEARCH_RESULT_FIELD_TITLE.value)
             creation_date = result.get(
-                StackExchangeEnum.SEARCH_RESULT_FIELD_CREATION_DATE.value)
+                StackExchangeEnum.SEARCH_RESULT_FIELD_CREATION_DATE.value
+            )
             url = result.get(StackExchangeEnum.SEARCH_RESULT_FIELD_LINK.value)
-            output_text += f"{index + 1} - {title}\n\tcreated: {creation_date}\n\tlink: {url}"
+            output_text += (
+                f"{index + 1} - {title}\n\tcreated: {creation_date}\n\tlink: {url}"
+            )
             if details:
                 answered = result.get(
-                    StackExchangeEnum.SEARCH_RESULT_FIELD_IS_ANSWERED.value)
-                owner = result.get(
-                    StackExchangeEnum.SEARCH_RESULT_FIELD_OWNER.value)
-                score = result.get(
-                    StackExchangeEnum.SEARCH_RESULT_FIELD_SCORE.value)
+                    StackExchangeEnum.SEARCH_RESULT_FIELD_IS_ANSWERED.value
+                )
+                owner = result.get(StackExchangeEnum.SEARCH_RESULT_FIELD_OWNER.value)
+                score = result.get(StackExchangeEnum.SEARCH_RESULT_FIELD_SCORE.value)
                 output_text += f"\n\t\tanswered: {answered}\n\t\towner: {owner}\n\t\tscore: {score}"
 
             output_text += "\n"
