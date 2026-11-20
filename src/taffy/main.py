@@ -51,7 +51,7 @@ def search_wikipedia(
 
         user_input = handle_input(output_text)
 
-        if user_input == 0:
+        if str(user_input) == str(0):
             print("Quitting")
             return
         if not user_input:
