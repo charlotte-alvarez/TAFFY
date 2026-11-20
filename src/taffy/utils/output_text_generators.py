@@ -18,7 +18,6 @@ class WikipediaTextGeneration:
 
         return output_text
 
-
     def references_list(references: list) -> str:
         """
         Output text for the reference list
@@ -54,7 +53,9 @@ class WikipediaTextGeneration:
             index += 1
         parent = section.parent.name if section.parent else "Description"
         num_children = len(section.children)
-        children = f"See additional section? (1-{num_children});" if num_children > 0 else ""
+        children = (
+            f"See additional section? (1-{num_children});" if num_children > 0 else ""
+        )
         output_text = f"-----------\n{children} [Enter] goes up ({parent}); 0 quits)\n\n{output_text}"
         output_text += "\n"
 
